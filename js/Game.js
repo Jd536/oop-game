@@ -49,7 +49,7 @@ class Game{
                     let tries =Array.from(document.querySelectorAll('.tries img[src="images/liveHeart.png"'));
                         tries[i].setAttribute("src","images/lostHeart.png"); 
                         if(failed.length==5){
-                            Game.gameOver();
+                            this.gameOver();
                         }
                               
                 }
