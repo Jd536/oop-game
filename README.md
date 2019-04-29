@@ -1,1 +1,3 @@
 # oop-game
+OOP Game Show App is built using JavaScript and is a "phrase Hunter" game where players have to guess letters contained on hidden phrases. 
+The player tries to guess the phrase by selecting individual letters from an onscreen keyboard... 
