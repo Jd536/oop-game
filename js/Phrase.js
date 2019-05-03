@@ -1,11 +1,10 @@
-/* Phrase class, to create new phrases*/
 class Phrase{
-    constructor(phrase){
-        this.phrase = phrase;
+    constructor(){
+        this.phrase = game.activePhrase;
     }
-    addPhraseToDisplay(){
-         let ul = document.querySelectorAll("#phrase ul")[0];
-        let letters = this.phrase.split("");
+    addPhraseToDisplay(phrase){
+        let ul= document.querySelectorAll("#phrase ul")[0];
+        let letters= phrase.toLowerCase().split("");
         for(let i=0; i<letters.length; i++) {
             let letter = letters[i];
             
@@ -23,38 +22,31 @@ class Phrase{
             
         }
     }
-    checkLetter(){//Checks to see if letter selected  matches a letter in the phrase.
-        let activePhrase= this.phrase.toLowerCase().split("");
-        let lis =Array.from(document.querySelectorAll(".letter"));
-        keys.forEach(function(key){
-            let keyText = key.textContent;
-            key.addEventListener("click", function(){
-               
-                if(activePhrase.indexOf(keyText)!==-1){
-                    console.log(true);
-                    return true;
-                }else{
-                    console.log(false);
-                    return false;
-                }
-            });            
-        });
-         console.log(activePhrase); 
-    }
-    showMatchedLetter(){// Reveal the matching letters
-        let lis = Array.from(document.querySelectorAll(".letter"));
-        let keys = Array.from(document.querySelectorAll(".key"));
-        for(let i=0;i<lis.length;i++){
-        keys.forEach(function(key){
-            key.addEventListener("click", function(){
-                if(key.textContent=== lis[i].textContent.toLowerCase()){
-                    lis[i].classList.remove("hide");
-                    lis[i].classList.add("show");
-                }
-            });
-        });
-        }
-        
-        }
-}
 
+    checkLetter(keyText){ 
+        let thisPhrase = this;
+        let lis = document.querySelectorAll(".letter");  
+           for(let i=0; i<lis.length; i++){
+            if(keyText == lis[i].textContent ){
+                    console.log(true);
+                   thisPhrase.showMatchedLetter(lis[i]);
+            } 
+        }
+     
+    }
+    showMatchedLetter(lis){
+    lis.classList.remove("hide");
+    lis.classList.add("show");
+    }
+
+    showWrongKeys (keyText, activePhrase, key){
+             
+            if(activePhrase.indexOf(keyText) === -1){
+                console.log("wrong")
+                key.classList.add("wrong");
+            } else{
+                key.classList.add("chosen");
+            }
+    
+    }
+}
