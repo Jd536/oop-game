@@ -1,52 +1,53 @@
 class Phrase{
-    constructor(){
-        this.phrase = game.activePhrase;
+    constructor(phrase){
+        this.phrase = phrase.toLowerCase();
     }
-    addPhraseToDisplay(phrase){
-        let ul= document.querySelectorAll("#phrase ul")[0];
-        let letters= phrase.toLowerCase().split("");
-        for(let i=0; i<letters.length; i++) {
-            let letter = letters[i];
+
+    addPhraseToDisplay(){
+        let arrayOfRandomPhraseLetters= this.phrase.split("");
+        for(let i=0; i<arrayOfRandomPhraseLetters.length; i++) {
+            let letter = arrayOfRandomPhraseLetters[i];
             
             if(letter!==" "){
                 let li = document.createElement('li');
                 li.className = "hide letter"
                 li.textContent=letter;
-                ul.appendChild(li);
+                phraseUl.appendChild(li);
             }else{
                 let li = document.createElement('li');
                 li.className = "hide space "
                 li.textContent=letter;
-                ul.appendChild(li);
+                phraseUl.appendChild(li);
             }
             
         }
     }
-
-    checkLetter(keyText){ 
+    checkLetter(keyText){
         let thisPhrase = this;
-        let lis = document.querySelectorAll(".letter");  
-           for(let i=0; i<lis.length; i++){
-            if(keyText == lis[i].textContent ){
-                    console.log(true);
-                   thisPhrase.showMatchedLetter(lis[i]);
-            } 
-        }
+        if (this.phrase.indexOf(keyText) === -1){          
+            game.removeLife(keyText);
+            return false;
+           
+        } else{
+            thisPhrase.showMatchedLetter(keyText);
+            for (let i = 0; i<keys.length;i++){
+                if(keys[i].textContent === keyText){
+                    keys[i].classList.add("chosen")
+                }
+            }
+            return true;
+;        }
      
     }
-    showMatchedLetter(lis){
-    lis.classList.remove("hide");
-    lis.classList.add("show");
-    }
-
-    showWrongKeys (keyText, activePhrase, key){
-             
-            if(activePhrase.indexOf(keyText) === -1){
-                console.log("wrong")
-                key.classList.add("wrong");
-            } else{
-                key.classList.add("chosen");
-            }
     
-    }
+    showMatchedLetter(letter){
+        let lis = document.querySelectorAll(".letter");
+        for(var i = 0; i < lis.length; i++){
+            if(lis[i].textContent == letter){
+            lis[i].classList.remove("hide");
+            lis[i].classList.add("show");
+            }
+        }
+        }
+   
 }

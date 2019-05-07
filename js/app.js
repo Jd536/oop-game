@@ -8,16 +8,22 @@ let span = document.createElement("span");
 let image = document.createElement("img");
 image.height="50";
 span.appendChild(image);
-
 const game = new Game();
-const phrase = new Phrase();
-console.log(phrase.phrase);
-console.log(game.activePhrase);
 
-let reset__btn = document.getElementById("btn__reset");
-reset__btn.addEventListener("click", function(event){
+let resetButton = document.getElementById("btn__reset");
+resetButton.addEventListener("click", function(event){
     game.startGame();
 
-})
-
-game.handleInteraction();
+});
+keys.forEach(function(key){
+    key.addEventListener("click", function(){
+        let keyText = key.textContent;
+        game.handleInteraction(keyText);
+        key.setAttribute("disabled", "true");
+    })
+});
+document.addEventListener('keypress', function(event){
+    let keyText= event.key;
+    game.handleInteraction(keyText);
+    
+});
