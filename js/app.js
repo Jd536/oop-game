@@ -1,29 +1,27 @@
-let overlay = document.getElementById("overlay");
-let phraseUl = document.querySelectorAll("#phrase ul")[0];
+const overlay = document.getElementById("overlay");
 let overlayH1 = overlay.querySelectorAll("h1")[0];
-let keys = Array.from(document.querySelectorAll(".key"));
-let tries = document.querySelectorAll(".tries");
+const phraseContainer = document.querySelectorAll("#phrase ul")[0];
+const keys = document.querySelectorAll(".key");
 var lives = document.querySelectorAll(".tries img");
+const game = new Game();
 let span = document.createElement("span");
 let image = document.createElement("img");
 image.height="50";
 span.appendChild(image);
-const game = new Game();
 
-let resetButton = document.getElementById("btn__reset");
-resetButton.addEventListener("click", function(event){
+
+let startAndResetButton = document.getElementById("btn__reset");
+startAndResetButton.addEventListener("click", function(){
     game.startGame();
-
 });
-keys.forEach(function(key){
-    key.addEventListener("click", function(){
-        let keyText = key.textContent;
-        game.handleInteraction(keyText);
-        key.setAttribute("disabled", "true");
+
+keys.forEach(key => {
+    key.addEventListener("click", (event)=>{
+       game.handleInteraction(event);
     })
 });
-document.addEventListener('keypress', function(event){
-    let keyText= event.key;
-    game.handleInteraction(keyText);
-    
+
+document.addEventListener("keypress", function(event){
+    game.handleInteraction(event);
+    return false;
 });

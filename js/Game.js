@@ -4,17 +4,19 @@ class Game{
         this.phrases = this.createPhrase();
         this.activePhrase = null;
     }
+    
     createPhrase(){
         return[
             "The change is you",
             "I love you",
             "You are beautiful",
             "I love coding JavaScript",
-            "Practice makes perfect"
+            "You are perfect"
         ]
     }
+
     getRandomPhrase(){
-        let index= Math.floor(Math.random()*this.phrases.length);
+        let index = Math.floor(Math.random()*this.phrases.length);
         let randomPhrase = this.phrases[index];
         return new Phrase(randomPhrase);
     }
@@ -23,15 +25,16 @@ class Game{
         overlay.style.display = "none";
         if(overlay.className =="win" || overlay.className=== "lose"){
             overlayH1.appendChild(image);
-            var li =phraseUl.lastElementChild;
+            var li =phraseContainer.lastElementChild;
             this.missed = 0;
             while(li){
-                phraseUl.removeChild(li);
-                li=phraseUl.lastElementChild;
+                phraseContainer.removeChild(li);
+                li=phraseContainer.lastElementChild;
             }
             for(var i = 0; i < lives.length; i++){
                 lives[i].setAttribute("src","images/liveHeart.png")
             }
+
             keys.forEach(function(key){
                 key.classList.remove("wrong");
                 key.classList.remove("chosen");
@@ -40,46 +43,62 @@ class Game{
         }
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay();
-
     }
-
-    handleInteraction(keyText){
-
-        this.activePhrase.checkLetter(keyText);
-        this.gameOver();
-     
-    }
-    
-    checkWin(){
-        let revealedLetters = document.querySelectorAll(".show");
-        let lettersOnDisplay = document.querySelectorAll(".letter");
-        if(revealedLetters.length === lettersOnDisplay.length){
-            return true;
-        } else if(this.missed === 5){
-            return false;
+    handleInteraction(){
+        if(event.target.className ==="key"){
+           
+            let button = event.target;
+            button.setAttribute("disabled", true);
+            this.activePhrase.checkLetter(button);
+            this.activePhrase.showMatchedLetter(button);
+            this.removeLife(button);
+            this.gameOver();
+            this.activePhrase.showMatchedLetter(button);
+        }   else {
+            let pressedKey = event.key;
+            keys.forEach(key=>{
+                if(pressedKey === key.textContent){
+                    this.activePhrase.checkLetter(key);
+                    this.activePhrase.showMatchedLetter(key);
+                    if(key.disabled !== true){
+                        this.removeLife(key);
+                    }
+                    this.gameOver();
+                    this.activePhrase.showMatchedLetter(key);
+                    key.setAttribute("disabled", true);
+                }
+             
+            });
         }
     }
 
-    removeLife(keyText){
+    checkWin(){
+        let matchedLetters = document.querySelectorAll(".show"); 
+        let activePhraseLetters = document.querySelectorAll(".letter");
+        if(matchedLetters.length === activePhraseLetters.length){
+            console.log("win!");
+            return true;
+        }
+    }
+
+    removeLife(key){
+        if(this.activePhrase.checkLetter(key)=== false){
             lives[this.missed].setAttribute("src","images/lostHeart.png");
             this.missed += 1;
-            for (let i = 0; i<keys.length;i++){
-                if(keys[i].textContent === keyText){
-                    keys[i].classList.add("wrong")
-                }
-            };
+        }
     }
 
     gameOver(){
-        if (this.checkWin() === false){
-                overlay.style.display = "";
-                overlay.style.background="#232526";
-                overlay.style.background= 'linear-gradient(to right, #232526, #414345)';
-                overlay.className = "lose";
-                image.setAttribute("src","images/sadEmoji.png")
-                overlayH1.textContent = "You lose!!";
-                overlayH1.appendChild(image);           
-        } else if (this.checkWin() === true){
+        if (this.missed ===  5){
+            overlay.style.display = "";
+            overlay.style.background="#232526";
+            overlay.style.background= 'linear-gradient(to right, #232526, #414345)';
+            overlay.className = "lose";
+            image.setAttribute("src","images/sadEmoji.png")
+            overlayH1.textContent = "You lose!!";
+            overlayH1.appendChild(image);           
+        }
+        if (this.checkWin() === true){
             overlay.style.display = "";
             overlay.style.background="#b2fefa";
             overlay.style.background= 'linear-gradient(to right, #b2fefa, #0ed2f7)';

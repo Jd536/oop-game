@@ -4,50 +4,47 @@ class Phrase{
     }
 
     addPhraseToDisplay(){
-        let arrayOfRandomPhraseLetters= this.phrase.split("");
-        for(let i=0; i<arrayOfRandomPhraseLetters.length; i++) {
-            let letter = arrayOfRandomPhraseLetters[i];
+        let arrayOfPhraseLetter = this.phrase.split("");
+        arrayOfPhraseLetter.forEach(letter => {
+            let li = document.createElement("li");
+            li.textContent = letter;
             
             if(letter!==" "){
                 let li = document.createElement('li');
                 li.className = "hide letter"
+                li.style.userSelect = "none";
                 li.textContent=letter;
-                phraseUl.appendChild(li);
+                phraseContainer.appendChild(li);
             }else{
                 let li = document.createElement('li');
-                li.className = "hide space "
+                li.className = "hide space ";
                 li.textContent=letter;
-                phraseUl.appendChild(li);
+                phraseContainer.appendChild(li);
             }
-            
+        });
+    }
+
+  
+    checkLetter(key){
+        let keyText = key.textContent;
+        let thisPhrase = this;
+        if( thisPhrase.phrase.indexOf(keyText) != -1){
+            // console.log(true);
+            key.classList.add("chosen");
+            return true;
+        } else{
+            key.classList.add("wrong");
+            // console.log(false);
+            return false;
         }
     }
-    checkLetter(keyText){
-        let thisPhrase = this;
-        if (this.phrase.indexOf(keyText) === -1){          
-            game.removeLife(keyText);
-            return false;
-           
-        } else{
-            thisPhrase.showMatchedLetter(keyText);
-            for (let i = 0; i<keys.length;i++){
-                if(keys[i].textContent === keyText){
-                    keys[i].classList.add("chosen")
-                }
-            }
-            return true;
-;        }
-     
-    }
-    
-    showMatchedLetter(letter){
+    showMatchedLetter(key){
         let lis = document.querySelectorAll(".letter");
         for(var i = 0; i < lis.length; i++){
-            if(lis[i].textContent == letter){
+            if(lis[i].textContent == key.textContent){
             lis[i].classList.remove("hide");
             lis[i].classList.add("show");
             }
         }
-        }
-   
+    }
 }
