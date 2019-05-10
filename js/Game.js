@@ -49,21 +49,43 @@ class Game{
            
             let button = event.target;
             button.setAttribute("disabled", true);
-            this.activePhrase.checkLetter(button);
+            // this.activePhrase.checkLetter(button);
             this.activePhrase.showMatchedLetter(button);
-            this.removeLife(button);
-            this.gameOver();
+            if(this.activePhrase.checkLetter(button) === true){
+               button.classList.add("chosen");
+            } if(this.activePhrase.checkLetter(button) === false){
+                button.classList.add("wrong");
+                this.removeLife(button);
+                this.missed += 1;
+            }
+            if (this.checkWin() ==="win"){
+                this.gameOver("win");
+            } else if(this.checkWin() === "lose"){
+                this.gameOver("lose");
+            }
             this.activePhrase.showMatchedLetter(button);
-        }   else {
+        }  else {
             let pressedKey = event.key;
             keys.forEach(key=>{
                 if(pressedKey === key.textContent){
-                    this.activePhrase.checkLetter(key);
+                    // this.activePhrase.checkLetter(key);
                     this.activePhrase.showMatchedLetter(key);
-                    if(key.disabled !== true){
-                        this.removeLife(key);
+                 
+                    if(this.activePhrase.checkLetter(key) === true){
+                        key.classList.add("chosen");
+                     } else if(this.activePhrase.checkLetter(key) === false){
+                         key.classList.add("wrong");
+                           if(key.disabled !== true){
+                                this.removeLife(key);
+                                this.missed += 1;
+                            }
+                         
+                     }
+                     if (this.checkWin() ==="win"){
+                        this.gameOver("win");
+                    } else if(this.checkWin() === "lose"){
+                        this.gameOver("lose");
                     }
-                    this.gameOver();
                     this.activePhrase.showMatchedLetter(key);
                     key.setAttribute("disabled", true);
                 }
@@ -77,19 +99,21 @@ class Game{
         let activePhraseLetters = document.querySelectorAll(".letter");
         if(matchedLetters.length === activePhraseLetters.length){
             console.log("win!");
-            return true;
+            return "win";
+        }  else if(this.missed == 5){
+            return "lose";
         }
     }
 
     removeLife(key){
         if(this.activePhrase.checkLetter(key)=== false){
             lives[this.missed].setAttribute("src","images/lostHeart.png");
-            this.missed += 1;
+            // this.missed += 1;
         }
     }
 
-    gameOver(){
-        if (this.missed ===  5){
+    gameOver(message){
+        if (message ===  "lose"){
             overlay.style.display = "";
             overlay.style.background="#232526";
             overlay.style.background= 'linear-gradient(to right, #232526, #414345)';
@@ -98,7 +122,7 @@ class Game{
             overlayH1.textContent = "You lose!!";
             overlayH1.appendChild(image);           
         }
-        if (this.checkWin() === true){
+        if (message ===  "win"){
             overlay.style.display = "";
             overlay.style.background="#b2fefa";
             overlay.style.background= 'linear-gradient(to right, #b2fefa, #0ed2f7)';

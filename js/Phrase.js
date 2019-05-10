@@ -30,10 +30,10 @@ class Phrase{
         let thisPhrase = this;
         if( thisPhrase.phrase.indexOf(keyText) != -1){
             // console.log(true);
-            key.classList.add("chosen");
+            // key.classList.add("chosen");
             return true;
         } else{
-            key.classList.add("wrong");
+            // key.classList.add("wrong");
             // console.log(false);
             return false;
         }
