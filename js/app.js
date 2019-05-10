@@ -15,13 +15,13 @@ startAndResetButton.addEventListener("click", function(){
     game.startGame();
 });
 
-keys.forEach(key => {
+keys.forEach(key => { // Handle click event on the onscreen keyboard
     key.addEventListener("click", (event)=>{
        game.handleInteraction(event);
     })
 });
 
-document.addEventListener("keypress", function(event){
+document.addEventListener("keypress", function(event){ // handle physical keyboard event
     game.handleInteraction(event);
     return false;
 });

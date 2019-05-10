@@ -5,7 +5,7 @@ class Game{
         this.activePhrase = null;
     }
     
-    createPhrase(){
+    createPhrase(){ // hold and return the an Array of phrases
         return[
             "The change is you",
             "I love you",
@@ -15,13 +15,13 @@ class Game{
         ]
     }
 
-    getRandomPhrase(){
+    getRandomPhrase(){ // Generates a random phrases based on a random number which is max at the length of the array
         let index = Math.floor(Math.random()*this.phrases.length);
         let randomPhrase = this.phrases[index];
         return new Phrase(randomPhrase);
     }
 
-    startGame(){
+    startGame(){ // starts and reset the game and it's values
         overlay.style.display = "none";
         if(overlay.className =="win" || overlay.className=== "lose"){
             overlayH1.appendChild(image);
@@ -41,7 +41,7 @@ class Game{
                 key.removeAttribute("disabled");
             })
         }
-        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase = this.getRandomPhrase(); // value of the selected phrase is passed to the activePhrase property
         this.activePhrase.addPhraseToDisplay();
     }
     handleInteraction(){
@@ -112,7 +112,7 @@ class Game{
         }
     }
 
-    gameOver(message){
+    gameOver(message){ // display a message and change the color of the overlay based on the message received from the checkwin method called in the handle interaction method
         if (message ===  "lose"){
             overlay.style.display = "";
             overlay.style.background="#232526";
